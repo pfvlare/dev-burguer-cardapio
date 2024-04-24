@@ -2,7 +2,7 @@ const menu = document.getElementById("menu")
 const cartBtn = document.getElementById("cart-btn")
 const cartModal = document.getElementById("cart-modal")
 const cartItemsContainer = document.getElementById("cart-items")
-const cartTotal = document.getElementById("Cart-total")
+const cartTotal = document.getElementById("cart-total")
 const checkoutBtn = document.getElementById("checkout-btn")
 const closeModalBtn = document.getElementById("close-modal-btn")
 const cartCounter = document.getElementById("cart-count")
@@ -11,16 +11,16 @@ const addressWarn = document.getElementById("address-warn")
 
 
 let cart = [];
-
+// Abrir o modal do carrinho
 cartBtn.addEventListener("click", function() {
     updateCartModal();
     cartModal.style.display = "flex"
 })
-
+// Fechar o modal do carrinho
 cartModal.addEventListener("click", function(event){
 if(event.target === cartModal){
     cartModal.style.display = "none"
-}
+    }
 })
 
 closeModalBtn.addEventListener("click", function(){
@@ -36,11 +36,12 @@ if(parentButton){
     const name = parentButton.getAttribute("data-name")
     const price = parseFloat(parentButton.getAttribute("data-price"))
     addToCart(name, price)
+    //Adicionar no carrinho
     }
 
 })
 
-
+//Função para adicionar no carrinho
 function addToCart (name, price){
 const existingItem = cart.find(item => item.name === name)
 
@@ -54,14 +55,13 @@ cart.push({
     price,
     quantity: 1,
     })
-
 }
 
 updateCartModal()
 
 }
 
-
+//Atualiza o carrinho
 function updateCartModal(){
     cartItemsContainer.innerHTML = "";
     let total = 0;
@@ -99,9 +99,10 @@ cartCounter.innerHTML = cart.length;
 
 }
 
+// Função para remover o item do carrinho
 
 cartItemsContainer.addEventListener("click", function (event){
-    if(event.target.classList.countains("remove-from-cart-btn")){
+    if(event.target.classList.contains("remove-from-cart-btn")){
         const name = event.target.getAttribute("data-name")
 
        removeItemCart(name);
@@ -136,9 +137,10 @@ addressInput.addEventListener("input", function(event){
 
 })
 
+//Finalizar pedido
 checkoutBtn.addEventListener("click", function(){
 
-    const isOpen = checkRestauranteOpen();
+    const isOpen = checkRestaurantOpen();
     if(!isOpen){
         Toastify({
             text: "Ops, o restaurante está fechado!",
@@ -148,19 +150,20 @@ checkoutBtn.addEventListener("click", function(){
             position: "right", // `left`, `center` or `right`
             stopOnFocus: true, // Prevents dismissing of toast on hover
             style: {
-              background: "#ef4444",
+            background: "#ef4444",
             },
-            onClick: function(){} // Callback after click
-          }).showToast();       
+          }).showToast(); 
+
            return;
     }
 
-if(cart.lenght === 0) return;
+if(cart.length === 0) return;
 if(addressInput.value === ""){
     addressWarn.classList.remove("hidden")
     addressInput.classList.add("border-red-500")
     return;
 }
+//Enviar o pedido para api Whats
 
 const cartItems = cart.map((item) => {
     return (
@@ -177,19 +180,21 @@ updateCartModal();
 
 })
 
-function checkRestauranteOpen(){
+// Verificar a hora e manipular o card horario
+
+function checkRestaurantOpen(){
     const data = new Date();
     const hora = data.getHours();
-    return hora >= 18 && hora < 22;
+    return hora >= 18 && hora < 22; //true = restaurante está aberto
 }
 
 const spanItem = document.getElementById("date-span")
-const isOpen = checkRestauranteOpen();
+const isOpen = checkRestaurantOpen();
 
 if(isOpen){
  spanItem.classList.remove("bg-red-500");
     spanItem.classList.add("bg-green-600")
 }else{
     spanItem.classList.remove("bg-green-600")
-    spanItem.classList.add("bg-green-500")
+    spanItem.classList.add("bg-red-500")
 }
