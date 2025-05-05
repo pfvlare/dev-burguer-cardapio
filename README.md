@@ -51,5 +51,4 @@ Este projeto simula um **cardápio digital interativo** de uma hamburgueria fict
 1. Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/cardapio-devburguer.git
-cd cardapio-devburguer
+git clone https://github.com/pfvlare/dev-burguer-cardapio.git
